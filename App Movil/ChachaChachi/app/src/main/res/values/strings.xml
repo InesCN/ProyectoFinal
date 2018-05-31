@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ChachaChachi</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="usuario">Usuario</string>
+    <string name="introduzca_sus_datos">INTRODUZCA SUS DATOS</string>
+    <string name="chacha">chacha</string>
+</resources>

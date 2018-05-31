@@ -1,0 +1,4 @@
+
+Para activar el Bluetooth	->	https://stackoverflow.com/questions/25178930/turn-on-bluetooth-automatically-when-application-is-open
+
+Entradas y salidas (registros)	->	https://goo.gl/images/dxr4mF

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Museo MadiFP</string>
+    <string name="hello_world">Hola Mundo</string>
+    <string name="action_settings">Configuración</string>
+</resources>
