@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -52,9 +53,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),"Por favor introduzca el usuario y la contraseña",Toast.LENGTH_SHORT).show();
                 } else {
                     CheckLogin checkLogin = new CheckLogin();
-                    checkLogin.execute(user, pass);
+                    System.out.println("execute");
 
                     activarBluetooth();
+                    checkLogin.execute(user, pass);
+
+
                 }
 
             }
@@ -78,38 +82,41 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+            System.out.println("En el execute");
                 try {
                     connectionClass = new ConnectionClass();
                     if (connectionClass.conectar() == null) {
                         z = "Comprueba tu conexión a internet";
                     } else {
-
+                        System.out.println("select");
                         String query = "SELECT usuario, contrasena FROM empleado WHERE usuario = '"
-                                + username.toString() + "' AND contrasena = '"
-                                + password.toString() + "';";
+                                + params[0]+ "' AND contrasena = '"
+                                + params[1]+ "';";
                         Statement stmt = connectionClass.conectar().createStatement();
                         ResultSet rs = stmt.executeQuery(query);
                         if (rs.next()) {
                             z = "Autentificando ...";
                             isSuccess = true;
+
                         } else {
                             z = "Usuario o contraseña inválidos";
                             isSuccess = false;
                         }
                     }
                 } catch (SQLException ex) {
-                    z = ex.getMessage();
+                 //   z = ex.getMessage();
                     ex.printStackTrace();
                 }
-
+            System.out.println("resultado"+z);
                 return z;
             }
 
             @Override
-        protected void onPostExecute(String s){
+        protected  void onPostExecute(String s){
                 super.onPostExecute(s);
                 if (!isSuccess){
-                    Toast.makeText(getBaseContext(), "Error de login. " + s, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getBaseContext(), "Error de login. " + s, Toast.LENGTH_LONG).show();
+                    Log.d("fallo","Error de login. " + s);
                 }
                 else{
                     Intent ventanaTarea = new Intent(MainActivity.this, Tareas.class);

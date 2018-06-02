@@ -73,24 +73,6 @@ public class ListAdapter extends BaseAdapter {
         TextView txtMajorMinor = (TextView) rowView.findViewById(R.id.txtMajorMinor);
         txtMajorMinor.setText("Major: " + beacons.get(position).getMajor() + " Minor: " + beacons.get(position).getMinor());
 
-        /*img = (ImageView) rowView.findViewById(R.id.imagen);
-
-        listaImagenes.add(R.drawable.beaconblue);
-        listaImagenes.add(R.drawable.beacondarkblue);
-        listaImagenes.add(R.drawable.beacondarkgreen);
-        listaImagenes.add(R.drawable.beaconpink);
-
-        while (i < beacons.size()) {
-
-
-            int color = i % 4;
-            System.out.println("~~INDICE " + i);
-            int idImagen = listaImagenes.get(color);
-
-            // Crear ImageView con ese id
-            img.setImageResource(idImagen);
-            i++;
-        }*/
         return rowView;
     }
 }

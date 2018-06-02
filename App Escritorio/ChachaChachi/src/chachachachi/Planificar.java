@@ -6,6 +6,7 @@
 package chachachachi;
 
 
+import chachachachi.entidades.Sala;
 import chachachachi.entidades.Tarea;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,12 +42,12 @@ public final class Planificar extends javax.swing.JPanel {
         initComponents();
 
         listaTareas.setModel(listaTareasModelo);
-        //listaEstancias.setModel(listaEstanciasModelo);
+        listaEstancias.setModel(listaEstanciasModelo);
 
         decorarJTree();
 
         obtenerTareas();
-        //obtenerSalas();
+        obtenerSalas();
         fillcombo();
     }
 
@@ -122,7 +123,7 @@ public final class Planificar extends javax.swing.JPanel {
 
     }
 
-    /*public void obtenerSalas() {
+    public void obtenerSalas() {
         //this.turno = turno;
         try ( //Creamos la conexión
                 Connection conexion = connection()) {
@@ -146,7 +147,7 @@ public final class Planificar extends javax.swing.JPanel {
             Logger.getLogger(Planificar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }*/
+    }
 
      public void obtenerTareasAsignadas() throws SQLException, SQLException {
         String users = cbEmpleados.getSelectedItem().toString();

@@ -136,6 +136,7 @@ public class GestionPagos extends javax.swing.JPanel {
 
             String usarBD = "USE chachachachi;";
             sentencia.executeUpdate(usarBD);
+            //tiempotrabajado desde la fecha
             ResultSet result = sentencia.executeQuery("SELECT SUM(est.duración) \n"
                     + "FROM empleado_sala_tarea est, empleado e \n"
                     + "WHERE e.nombre = '" + name + "'");
@@ -166,7 +167,7 @@ public class GestionPagos extends javax.swing.JPanel {
             String tiempoTrabajado = txtTiempoPago.getText();
             String fecha = txtFechaPago.getText();
             
-            /*sentencia.executeUpdate("INSERT INTO tarea_realizada (i + "," + fecha + ",1," + tiempoTrabajado + ")
+            /*sentencia.executeUpdate("INSERT INTO tarea_realizada (" + i + "," + fecha + ",1," + tiempoTrabajado +"
                 SELECT P_tarea_realizada, fecha, pagada, duracion
                 FROM tarea_realizada
                 WHERE e.P_empleado = est.A_empleado 
@@ -281,15 +282,12 @@ public class GestionPagos extends javax.swing.JPanel {
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTiempoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(btnPagar))
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPagar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -312,9 +310,9 @@ public class GestionPagos extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtTiempoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(58, 58, 58)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addComponent(btnPagar)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGap(46, 46, 46))
         );
     }// </editor-fold>//GEN-END:initComponents
 
