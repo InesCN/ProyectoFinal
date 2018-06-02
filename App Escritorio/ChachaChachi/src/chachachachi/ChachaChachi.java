@@ -52,6 +52,7 @@ public class ChachaChachi extends javax.swing.JFrame {
         principal = new Principal(this);
         at = new AddTareas();
         addEmpleado = new AddEmpleado();
+        addSala = new AddSala();
 
         panelActual = principal;
         panelActual.setVisible(true);
@@ -59,20 +60,6 @@ public class ChachaChachi extends javax.swing.JFrame {
         setVisible(true);
         this.add(panelActual, BorderLayout.CENTER);
     }
-
-    /*public void iconosDeBotones() {
-        Image btnEmpleados = new ImageIcon(getClass().getResource("./../img/clock.png")).getImage();
-        ImageIcon iconoEmpleados = new ImageIcon(btnEmpleados);
-        this.btnEmpleados.setIcon(iconoEmpleados);
-        
-        Image btnTarea = new ImageIcon(getClass().getResource("./../img/clock.png")).getImage();
-        ImageIcon iconoTarea = new ImageIcon(btnTarea);
-        this.btnTareas.setIcon(iconoTarea);
-
-        Image btnEstancias = new ImageIcon(getClass().getResource("./../img/calendar.png")).getImage();
-        ImageIcon iconoEstancias = new ImageIcon(btnEstancias);
-        this.btnEstancias.setIcon(iconoEstancias);
-    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -97,7 +84,7 @@ public class ChachaChachi extends javax.swing.JFrame {
         pnMenu.setBackground(new java.awt.Color(241, 110, 148));
         pnMenu.setPreferredSize(new java.awt.Dimension(250, 400));
 
-        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/whiteCleaner.png"))); // NOI18N
+        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cleaner128.png"))); // NOI18N
         btnHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHomeMouseClicked(evt);
@@ -116,7 +103,7 @@ public class ChachaChachi extends javax.swing.JFrame {
 
         btnTareas.setFont(new java.awt.Font("Calibri Light", 0, 12)); // NOI18N
         btnTareas.setForeground(new java.awt.Color(255, 255, 255));
-        btnTareas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tasks.png"))); // NOI18N
+        btnTareas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/flow-chart.png"))); // NOI18N
         btnTareas.setText("GESTIÓN TAREAS");
         btnTareas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -138,35 +125,35 @@ public class ChachaChachi extends javax.swing.JFrame {
         pnMenu.setLayout(pnMenuLayout);
         pnMenuLayout.setHorizontalGroup(
             pnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnMenuLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(90, 90, 90))
-            .addGroup(pnMenuLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(btnEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(30, 30, 30))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnMenuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnHome)
+                .addGap(68, 68, 68))
             .addGroup(pnMenuLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(btnEstancias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(30, 30, 30))
-            .addGroup(pnMenuLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(btnTareas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(25, 25, 25))
+                .addGroup(pnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnMenuLayout.createSequentialGroup()
+                        .addComponent(btnEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                        .addGap(30, 30, 30))
+                    .addGroup(pnMenuLayout.createSequentialGroup()
+                        .addComponent(btnEstancias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(30, 30, 30))
+                    .addGroup(pnMenuLayout.createSequentialGroup()
+                        .addComponent(btnTareas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(25, 25, 25))))
         );
         pnMenuLayout.setVerticalGroup(
             pnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnMenuLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(45, 45, 45)
                 .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addGap(85, 85, 85)
                 .addComponent(btnEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(15, 15, 15)
                 .addComponent(btnEstancias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(15, 15, 15)
                 .addComponent(btnTareas)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnMenu, java.awt.BorderLayout.WEST);
@@ -177,8 +164,6 @@ public class ChachaChachi extends javax.swing.JFrame {
     private void btnTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTareasMouseClicked
         // TODO add your handling code here:
         setPanelActual(at);
-
-
     }//GEN-LAST:event_btnTareasMouseClicked
 
     public void setPanelActual (JPanel nuevoPanel){

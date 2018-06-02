@@ -5,21 +5,36 @@
  */
 package chachachachi;
 
+import chachachachi.entidades.Sala;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 
 /**
  *
  * @author Inés
  */
-public class AddSala extends javax.swing.JPanel {
+public final class AddSala extends javax.swing.JPanel {
 
+    
+    DefaultListModel listaEstanciasModelo = new DefaultListModel();
     /**
      * Creates new form AddSala
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
      */
-    public AddSala() {
+    public AddSala() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        setBackground(Color.WHITE);
         initComponents();
+        listaEstancias.setModel(listaEstanciasModelo);
+        obtenerSalas();
     }
 
     public Connection connection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
@@ -28,6 +43,32 @@ public class AddSala extends javax.swing.JPanel {
                 = DriverManager.getConnection("jdbc:mysql://localhost/ChachaChachi",
                         "root", "");
         return conexion;
+    }
+    
+    public void obtenerSalas() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        //this.turno = turno;
+        try ( //Creamos la conexión
+                Connection conexion = connection()) {
+            DefaultListModel<String> listaSalas = new DefaultListModel<>();
+
+            //Usar la base de datos
+            try ( //Creamos la sentencia
+                    Statement sentencia = conexion.createStatement()) {
+                //Usar la base de datos
+                String usarBD = "USE ChachaChachi;";
+                sentencia.executeUpdate(usarBD);
+                ResultSet result = sentencia.executeQuery("SELECT P_sala, nombre FROM sala;");
+                
+                int posicion = 0;
+                while (result.next()) {
+                    listaEstanciasModelo.add(posicion, new Sala(result.getInt(1), result.getString(2)));
+                    posicion++;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Planificar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -39,19 +80,119 @@ public class AddSala extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaEstancias = new javax.swing.JList<>();
+        lblNombreTareas3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addTask.png"))); // NOI18N
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editTask.png"))); // NOI18N
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/deleteTask.png"))); // NOI18N
+
+        listaEstancias.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jScrollPane1.setViewportView(listaEstancias);
+
+        lblNombreTareas3.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        lblNombreTareas3.setText("ESTANCIAS");
+
+        jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel1.setText("Estancia:");
+
+        jLabel2.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel2.setText("Metros cuadrados:");
+
+        jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel3.setText("Nº de beacons:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(40, 40, 40)
+                        .addComponent(jButton3)
+                        .addGap(40, 40, 40)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(45, 45, 45)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(79, 79, 79)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(70, 70, 70))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(lblNombreTareas3)
+                .addGap(457, 457, 457))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(lblNombreTareas3)
+                        .addGap(11, 11, 11)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel2))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(80, 80, 80)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton3)
+                            .addComponent(jButton2))))
+                .addGap(51, 51, 51))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel lblNombreTareas3;
+    private javax.swing.JList<String> listaEstancias;
     // End of variables declaration//GEN-END:variables
 }

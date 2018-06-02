@@ -5,11 +5,14 @@
  */
 package chachachachi;
 
+import chachachachi.entidades.Tarea;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -18,8 +21,11 @@ import javax.swing.DefaultListModel;
  */
 public final class AddTareas extends javax.swing.JPanel {
 
+    DefaultListModel listaTareasModelo = new DefaultListModel();
+
     /**
      * Creates new form EntradasSalidas
+     *
      * @throws java.sql.SQLException
      * @throws java.lang.InstantiationException
      * @throws java.lang.IllegalAccessException
@@ -27,39 +33,42 @@ public final class AddTareas extends javax.swing.JPanel {
      */
     public AddTareas() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         initComponents();
-        
+        listaTareas.setModel(listaTareasModelo);
         obtenerTareas();
     }
-     public Connection connection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+
+    public Connection connection() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         Connection conexion
                 = DriverManager.getConnection("jdbc:mysql://localhost/ChachaChachi",
                         "root", "");
         return conexion;
     }
-    
-    public void obtenerTareas() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        //Creamos la conexión
-        
-        Connection conexion = connection();
 
-        DefaultListModel<String> lista = new DefaultListModel<>();
+    public void obtenerTareas() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        //this.turno = turno;
+        try ( //Creamos la conexión
+                Connection conexion = connection()) {
+            DefaultListModel<String> listaTareas = new DefaultListModel<>();
 
-        //Creamos la sentencia
-        Statement sentencia = conexion.createStatement();
+            //Usar la base de datos
+            try ( //Creamos la sentencia
+                    Statement sentencia = conexion.createStatement()) {
+                //Usar la base de datos
+                String usarBD = "USE ChachaChachi;";
+                sentencia.executeUpdate(usarBD);
+                ResultSet result = sentencia.executeQuery("SELECT P_tarea, texto, duracion FROM tarea;");
 
-        //Usar la base de datos
-        String usarBD = "USE ChachaChachi;";
-        sentencia.executeUpdate(usarBD);
-        ResultSet result = sentencia.executeQuery("SELECT e.nombre "
-                + "FROM empleado e");
-
-        while (result.next()) {
-            lista.addElement(result.getString(1));
+                int posicion = 0;
+                while (result.next()) {
+                    listaTareasModelo.add(posicion, new Tarea(result.getInt(1), result.getString(2), result.getInt(3)));
+                    posicion++;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Planificar.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listaUsuarios.setModel(lista);
-        sentencia.close();
-        conexion.close();
+
     }
 
     /**
@@ -72,21 +81,45 @@ public final class AddTareas extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaUsuarios = new javax.swing.JList<>();
+        listaTareas = new javax.swing.JList<>();
         lblNombre = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        listaUsuarios.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        listaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+        listaTareas.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        listaTareas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                listaUsuariosMouseClicked(evt);
+                listaTareasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(listaUsuarios);
+        jScrollPane1.setViewportView(listaTareas);
 
         lblNombre.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        lblNombre.setText("Tareas");
+        lblNombre.setText("TAREAS");
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addTask.png"))); // NOI18N
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/deleteTask.png"))); // NOI18N
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editTask.png"))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel1.setText("Tarea:");
+
+        jLabel2.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel2.setText("Duración:");
+
+        jLabel3.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        jLabel3.setText("Realizada:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -95,33 +128,78 @@ public final class AddTareas extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(64, 64, 64)
                         .addComponent(lblNombre))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addGap(40, 40, 40)
+                                .addComponent(jButton2))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(26, 26, 26)
                 .addComponent(lblNombre)
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33)
+                                .addComponent(jLabel2))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton3)
+                            .addComponent(jButton2))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void listaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaUsuariosMouseClicked
+    private void listaTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTareasMouseClicked
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_listaUsuariosMouseClicked
+
+    }//GEN-LAST:event_listaTareasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblNombre;
-    private javax.swing.JList<String> listaUsuarios;
+    private javax.swing.JList<String> listaTareas;
     // End of variables declaration//GEN-END:variables
 }
