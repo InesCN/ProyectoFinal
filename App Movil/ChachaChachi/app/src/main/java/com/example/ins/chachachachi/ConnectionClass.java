@@ -17,8 +17,8 @@ import java.sql.Statement;
 
 public class ConnectionClass {
 
-    /*@SuppressLint("NewApi")
-    public java.sql.Connection conn(){
+    @SuppressLint("NewApi")
+    public java.sql.Connection conectar(){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         java.sql.Connection conn = null;
@@ -27,7 +27,7 @@ public class ConnectionClass {
         try{
             Class.forName("com.mysql.jdbc.Driver");
 
-            conn = DriverManager.getConnection("jdbc:mysql://10.60.10.27/chachachachi", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://10.60.10.78:3306/chachachachi", "root2","root2");
             System.out.println("Connectado.");
            // conn = DriverManager.getConnection(connURL);
         } catch (Exception e){
@@ -35,16 +35,16 @@ public class ConnectionClass {
             e.printStackTrace();
         }
         return conn;
-    }*/
+    }
 
 
-    private static Connection connection = null;
+    /*private static Connection connection = null;
     public Connection conectar() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-
+            DriverManager.setLoginTimeout(100);
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://10.60.10.78:3306?characterEncoding=utf-8", "root", ""
+                    "jdbc:mysql://192.168.32.202:3306?characterEncoding=utf-8", "root", ""
             );
 
             Log.d("ConnectionClass", "Conectado");
@@ -75,7 +75,7 @@ public class ConnectionClass {
 
             }
         return connection;
-    }
+    }*/
 
 
 

@@ -32,7 +32,7 @@ public class Registro extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage(ClassLoader.getSystemResource("img/cleaner.png"));
+                getImage(ClassLoader.getSystemResource("img/cleaner32.png"));
 
         return retValue;
     }

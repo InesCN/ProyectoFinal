@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2018 a las 14:52:47
+-- Tiempo de generación: 04-06-2018 a las 14:40:02
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -133,7 +133,6 @@ CREATE TABLE `empleado_sala_tarea` (
   `A_tarea` int(11) DEFAULT NULL,
   `A_realizada` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
-  `pagada` tinyint(4) DEFAULT NULL,
   `duración` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -141,9 +140,9 @@ CREATE TABLE `empleado_sala_tarea` (
 -- Volcado de datos para la tabla `empleado_sala_tarea`
 --
 
-INSERT INTO `empleado_sala_tarea` (`P_empleadoSalaTarea`, `A_empleado`, `A_sala`, `A_tarea`, `A_realizada`, `fecha`, `pagada`, `duración`) VALUES
-(1, 2, 6, 5, NULL, '2018-05-15', NULL, '00:20:00'),
-(2, 1, 1, 3, NULL, '2018-05-17', NULL, '10:00:00');
+INSERT INTO `empleado_sala_tarea` (`P_empleadoSalaTarea`, `A_empleado`, `A_sala`, `A_tarea`, `A_realizada`, `fecha`, `duración`) VALUES
+(1, 2, 6, 5, NULL, '2018-05-15', '00:20:00'),
+(2, 1, 1, 3, NULL, '2018-05-28', '00:12:00');
 
 -- --------------------------------------------------------
 
@@ -229,6 +228,14 @@ CREATE TABLE `tarea_realizada` (
   `pagada` tinyint(4) DEFAULT NULL,
   `duracion` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tarea_realizada`
+--
+
+INSERT INTO `tarea_realizada` (`P_tarea_realizada`, `fecha`, `pagada`, `duracion`) VALUES
+(1, '2018-05-22', 0, '00:10:00'),
+(2, '2018-05-22', 1, '00:16:00');
 
 -- --------------------------------------------------------
 
@@ -394,7 +401,7 @@ ALTER TABLE `tarea`
 -- AUTO_INCREMENT de la tabla `tarea_realizada`
 --
 ALTER TABLE `tarea_realizada`
-  MODIFY `P_tarea_realizada` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `P_tarea_realizada` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `turno`

@@ -5,7 +5,7 @@
  */
 package chachachachi;
 
-
+import chachachachi.entidades.Sala;
 import chachachachi.entidades.Tarea;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -29,6 +30,7 @@ public final class Planificar extends javax.swing.JPanel {
 
     String turno;
     String usuario;
+    boolean guardado = false; //Cuando es igual a false no está guardado
 
     DefaultListModel listaTareasModelo = new DefaultListModel();
     DefaultListModel listaEstanciasModelo = new DefaultListModel();
@@ -41,12 +43,12 @@ public final class Planificar extends javax.swing.JPanel {
         initComponents();
 
         listaTareas.setModel(listaTareasModelo);
-        //listaEstancias.setModel(listaEstanciasModelo);
+        listaEstancias.setModel(listaEstanciasModelo);
 
         decorarJTree();
 
         obtenerTareas();
-        //obtenerSalas();
+        obtenerSalas();
         fillcombo();
     }
 
@@ -109,7 +111,7 @@ public final class Planificar extends javax.swing.JPanel {
                 String usarBD = "USE ChachaChachi;";
                 sentencia.executeUpdate(usarBD);
                 ResultSet result = sentencia.executeQuery("SELECT P_tarea, texto, duracion FROM tarea;");
-                
+
                 int posicion = 0;
                 while (result.next()) {
                     listaTareasModelo.add(posicion, new Tarea(result.getInt(1), result.getString(2), result.getInt(3)));
@@ -122,7 +124,7 @@ public final class Planificar extends javax.swing.JPanel {
 
     }
 
-    /*public void obtenerSalas() {
+    public void obtenerSalas() {
         //this.turno = turno;
         try ( //Creamos la conexión
                 Connection conexion = connection()) {
@@ -146,9 +148,9 @@ public final class Planificar extends javax.swing.JPanel {
             Logger.getLogger(Planificar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }*/
+    }
 
-     public void obtenerTareasAsignadas() throws SQLException, SQLException {
+    public void obtenerTareasAsignadas() throws SQLException, SQLException {
         String users = cbEmpleados.getSelectedItem().toString();
         System.out.println("### " + users);
         try ( //Creamos la conexión
@@ -174,6 +176,7 @@ public final class Planificar extends javax.swing.JPanel {
         }
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -199,14 +202,15 @@ public final class Planificar extends javax.swing.JPanel {
         lblNombreTareas3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         listaEstancias = new javax.swing.JList<>();
-        btnAnadir = new javax.swing.JButton();
         pPlanning = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtPlanning = new javax.swing.JTree();
         lblNombreTareas2 = new javax.swing.JLabel();
-        btnQuitarTarea = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtTiempoEstimado = new javax.swing.JLabel();
+        btnAddJtree = new javax.swing.JLabel();
+        btnRemoveJtree = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -309,13 +313,6 @@ public final class Planificar extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnAnadir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/rightArrow.png"))); // NOI18N
-        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirActionPerformed(evt);
-            }
-        });
-
         pPlanning.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Mi hogar");
@@ -346,36 +343,38 @@ public final class Planificar extends javax.swing.JPanel {
         pPlanningLayout.setHorizontalGroup(
             pPlanningLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPlanningLayout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addComponent(lblNombreTareas2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPlanningLayout.createSequentialGroup()
                 .addContainerGap(27, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(pPlanningLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPlanningLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPlanningLayout.createSequentialGroup()
+                        .addComponent(lblNombreTareas2)
+                        .addGap(97, 97, 97))))
         );
         pPlanningLayout.setVerticalGroup(
             pPlanningLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPlanningLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(lblNombreTareas2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        btnQuitarTarea.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
-        btnQuitarTarea.setText("x");
-        btnQuitarTarea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuitarTareaActionPerformed(evt);
+        jLabel4.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel4.setText("Tiempo estimado:");
+
+        txtTiempoEstimado.setFont(new java.awt.Font("Calibri Light", 0, 13)); // NOI18N
+        txtTiempoEstimado.setText("txtTiempoEstimado");
+
+        btnAddJtree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/next.png"))); // NOI18N
+        btnAddJtree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddJtreeMouseClicked(evt);
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Tiempo estimado:");
-
-        txtTiempoEstimado.setText("txtTiempoEstimado");
+        btnRemoveJtree.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/remove.png"))); // NOI18N
 
         javax.swing.GroupLayout pAbajoLayout = new javax.swing.GroupLayout(pAbajo);
         pAbajo.setLayout(pAbajoLayout);
@@ -386,10 +385,14 @@ public final class Planificar extends javax.swing.JPanel {
                 .addComponent(pTareas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(pEstancias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnQuitarTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pAbajoLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(btnRemoveJtree))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAbajoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddJtree)))
+                .addGap(18, 18, 18)
                 .addGroup(pAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pPlanning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pAbajoLayout.createSequentialGroup()
@@ -403,10 +406,10 @@ public final class Planificar extends javax.swing.JPanel {
             .addGroup(pAbajoLayout.createSequentialGroup()
                 .addGroup(pAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pAbajoLayout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(btnAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(btnQuitarTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(158, 158, 158)
+                        .addComponent(btnAddJtree)
+                        .addGap(63, 63, 63)
+                        .addComponent(btnRemoveJtree)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAbajoLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -423,6 +426,14 @@ public final class Planificar extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        btnSave.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        btnSave.setText("GUARDAR");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -432,6 +443,9 @@ public final class Planificar extends javax.swing.JPanel {
                     .addComponent(pAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pArriba, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(btnSave)
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -439,45 +453,55 @@ public final class Planificar extends javax.swing.JPanel {
                 .addComponent(pArriba, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnSave)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnQuitarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarTareaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnQuitarTareaActionPerformed
 
     private void listaTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaTareasMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_listaTareasMouseClicked
 
-    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
+    private void listaEstanciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaEstanciasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listaEstanciasMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+
+        //Una vez ya guardado
+        guardado = true;        
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnAddJtreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddJtreeMouseClicked
+        // TODO add your handling code here:
         int[] tareasSeleccionadas = listaTareas.getSelectedIndices();
         int[] estanciasSeleccionadas = listaEstancias.getSelectedIndices();
-        
+
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) jtPlanning.getModel().getRoot();
-        
+
         for (int i = 0; i < estanciasSeleccionadas.length; i++) {
-            
+
             for (int j = 0; j < root.getChildCount(); j++) {
-                
+
                 System.out.println("Comparando " + root.getChildAt(j).
                         toString() + " con " + ((Object) listaEstancias.getModel().
                                 getElementAt(i)).toString());
-                
+
                 if (root.getChildAt(j).toString().equals(((Object) listaEstancias.
                         getModel().getElementAt(estanciasSeleccionadas[i])).toString())) {
 
                     for (int h = 0; h < tareasSeleccionadas.length; h++) {
-                        
+
                         System.out.println("Añadiendo tarea " + ((Object) listaTareas.
                                 getModel().getElementAt(tareasSeleccionadas[h])).
                                 toString() + " a " + root.getChildAt(j).toString());
-                        
+
                         ((DefaultMutableTreeNode) root.getChildAt(j)).
                                 add(new DefaultMutableTreeNode(((Object) listaTareas.getModel().
                                         getElementAt(tareasSeleccionadas[h])).toString()));
-                        
+
                         for (int k = 0; k < jtPlanning.getRowCount(); k++) {
                             jtPlanning.expandRow(k);
                         }
@@ -486,16 +510,42 @@ public final class Planificar extends javax.swing.JPanel {
                 }
             }
         }
-    }//GEN-LAST:event_btnAnadirActionPerformed
+        for (int z = 0; z < tareasSeleccionadas.length; z++) {
 
-    private void listaEstanciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaEstanciasMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listaEstanciasMouseClicked
+            for (int a = 0; a < root.getChildCount(); a++) {
+
+                System.out.println("Comparando " + root.getChildAt(a).
+                        toString() + " con " + ((Object) listaTareas.getModel().
+                                getElementAt(z)).toString());
+
+                if (root.getChildAt(a).toString().equals(((Object) listaTareas.
+                        getModel().getElementAt(tareasSeleccionadas[z])).toString())) {
+
+                    for (int b = 0; b < estanciasSeleccionadas.length; b++) {
+
+                        System.out.println("Añadiendo tarea " + ((Object) listaEstancias.
+                                getModel().getElementAt(estanciasSeleccionadas[b])).
+                                toString() + " a " + root.getChildAt(a).toString());
+
+                        ((DefaultMutableTreeNode) root.getChildAt(a)).
+                                add(new DefaultMutableTreeNode(((Object) listaEstancias.getModel().
+                                        getElementAt(estanciasSeleccionadas[b])).toString()));
+
+                        for (int c = 0; c < jtPlanning.getRowCount(); c++) {
+                            jtPlanning.expandRow(c);
+                        }
+                        jtPlanning.repaint();
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAddJtreeMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAnadir;
-    private javax.swing.JButton btnQuitarTarea;
+    private javax.swing.JLabel btnAddJtree;
+    private javax.swing.JLabel btnRemoveJtree;
+    private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbEmpleados;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

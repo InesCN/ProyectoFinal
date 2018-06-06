@@ -72,7 +72,7 @@ ChachaChachi padre;
         });
 
         btnPlanificar.setBackground(new java.awt.Color(255, 204, 204));
-        btnPlanificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tasks.png"))); // NOI18N
+        btnPlanificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calendar.png"))); // NOI18N
         btnPlanificar.setText("PLANIFICAR");
         btnPlanificar.setMaximumSize(new java.awt.Dimension(200, 200));
         btnPlanificar.setMinimumSize(new java.awt.Dimension(200, 100));
