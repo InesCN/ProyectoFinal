@@ -5,6 +5,10 @@
  */
 package chachachachi;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 import chachachachi.entidades.Sala;
 import chachachachi.entidades.Tarea;
 import java.sql.Connection;

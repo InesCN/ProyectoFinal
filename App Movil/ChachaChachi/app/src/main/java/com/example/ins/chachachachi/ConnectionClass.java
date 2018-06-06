@@ -27,7 +27,11 @@ public class ConnectionClass {
         try{
             Class.forName("com.mysql.jdbc.Driver");
 
+<<<<<<< HEAD
             conn = DriverManager.getConnection("jdbc:mysql://10.60.10.78:3306/chachachachi", "root2","root2");
+=======
+            conn = DriverManager.getConnection("jdbc:mysql://192.168.32.202:3306/chachachachi", "root2","root2");
+>>>>>>> master
             System.out.println("Connectado.");
            // conn = DriverManager.getConnection(connURL);
         } catch (Exception e){
